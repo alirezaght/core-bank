@@ -1,0 +1,13 @@
+[package]
+name = "core-bank"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+diesel = { version = "1.4.4", features = ["postgres"] }
+dotenv = "0.15.0"
+uuid = "0.8.2"
+chrono = "0.4.19"
+bigdecimal = "0.3.0"
+diesel-derive-enum = "1.1.2"

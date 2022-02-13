@@ -1,0 +1,47 @@
+version: '3.1'
+
+
+
+volumes:
+    core-bank-db:
+    core-bank-db-admin:
+
+networks:
+  core-bank-network:
+    driver: bridge
+
+
+services:
+
+  core-bank-db:
+    ports:
+      - "5432:5432"
+    container_name: core-bank-db
+    image: postgres:14.2-alpine3.15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+       - core-bank-db:/data/postgres
+    networks:
+       - core-bank-network
+
+
+  core-bank-db-admin:
+    container_name: core-bank-db-admin
+    image: dpage/pgadmin4:6
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cb.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - core-bank-db-admin:/var/lib/pgadmin
+
+    ports:
+      - "5050:80"
+
+    networks:
+      - core-bank-network
+    restart: unless-stopped 
