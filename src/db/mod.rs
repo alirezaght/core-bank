@@ -1,5 +1,5 @@
 extern crate dotenv;
-
+pub mod dao;
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use dotenv::dotenv;

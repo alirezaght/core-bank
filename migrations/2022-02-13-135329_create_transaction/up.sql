@@ -14,5 +14,8 @@ CREATE TABLE t_transaction (
   blocked NUMERIC NOT NULL DEFAULT 0 CHECK (blocked >= 0),
   created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   CHECK (balance >= blocked),
-  UNIQUE (account, seq)
+  UNIQUE (account, seq),
+  CONSTRAINT fk_account FOREIGN KEY account REFERENCES t_account(address) ON DELETE CASCADE
 )
+
+CREATE INDEX transaction_account_index ON t_transaction (account);

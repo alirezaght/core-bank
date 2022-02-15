@@ -1,8 +1,8 @@
-use uuid;
 use chrono;
 use bigdecimal;
 use chrono::Utc;
 use diesel_derive_enum::*;
+use uuid::Uuid;
 
 // TransactionType Enum
 
@@ -33,15 +33,30 @@ pub enum TransactionReason {
 // Transaction Entity
 
 #[derive(Queryable)]
+#[derive(Debug)]
 pub struct Transaction {
-    pub id: uuid::Uuid,
+    pub id: Uuid,
+    pub account: String,
     pub transaction_type: TransactionType,
-    pub amount: String,
-    pub balance: bigdecimal::BigDecimal,
-    pub blocked: bigdecimal::BigDecimal,
     pub seq: i64,
+    pub amount: bigdecimal::BigDecimal,
     pub reason: TransactionReason,
     pub comment: Option<String>,
     pub description: Option<String>,
+    pub balance: bigdecimal::BigDecimal,
+    pub blocked: bigdecimal::BigDecimal,
     pub created: chrono::DateTime<Utc>,
+}
+
+// Account Entity
+
+#[derive(Queryable)]
+#[derive(Debug)]
+pub struct Account {
+    pub address: String,
+    pub detail: Option<String>,
+    pub seq: i64,
+    pub withdraw: bool,
+    pub deposit: bool,
+    pub comment: Option<String>,
 }

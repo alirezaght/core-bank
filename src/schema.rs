@@ -2,6 +2,20 @@ table! {
     use diesel::sql_types::*;
     use crate::models::*;
 
+    t_account (address) {
+        address -> Varchar,
+        detail -> Nullable<Text>,
+        seq -> Int8,
+        withdraw -> Bool,
+        deposit -> Bool,
+        comment -> Nullable<Text>,
+    }
+}
+
+table! {
+    use diesel::sql_types::*;
+    use crate::models::*;
+
     t_transaction (id) {
         id -> Uuid,
         account -> Varchar,
@@ -17,3 +31,8 @@ table! {
         created -> Timestamptz,
     }
 }
+
+allow_tables_to_appear_in_same_query!(
+    t_account,
+    t_transaction,
+);
