@@ -15,7 +15,7 @@ pub struct TransactionDTO{
     time: chrono::DateTime<Utc>,
 }
 
-// #[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct AccountDTO {
     address: String,
     withdraw: bool,
