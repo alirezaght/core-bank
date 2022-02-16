@@ -6,7 +6,10 @@ use rand_core::OsRng;
 use sha3::{Sha3_256};
 use sha2::{Sha256, Digest};
 use bs58;
+use serde::{Serialize, Deserialize};
 
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Address {
     pub public_key: Vec<u8>,
     pub private_key: Option<Vec<u8>>,

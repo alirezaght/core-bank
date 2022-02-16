@@ -1,19 +1,21 @@
 use bigdecimal::BigDecimal;
-use crate::models::{TransactionReason, TransactionType};
 use chrono::Utc;
+use serde::{Serialize, Deserialize};
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TransactionDTO{
     id: String,
     comment: String,
     description: String,
     amount: BigDecimal,
-    transaction_type: TransactionType,
-    reason: TransactionReason,
+    transaction_type: String,
+    reason: String,
     balance: BigDecimal,
     blocked: BigDecimal,
     time: chrono::DateTime<Utc>,
 }
 
+// #[derive(Debug, Serialize, Deserialize)]
 pub struct AccountDTO {
     address: String,
     withdraw: bool,
