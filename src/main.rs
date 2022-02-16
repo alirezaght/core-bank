@@ -8,15 +8,15 @@ use uuid::Uuid;
 
 mod schema;
 mod models;
+mod core;
+
 use db::dao::dao_transaction;
 use schema::t_transaction::dsl;
+use crate::core::create_address;
 
 fn main() {
-    let connection = db::establish_connection();
+   let address = create_address(None);
+   println!("{:?}", address.address);
+   println!("{:?}", address.is_valid());
 
-    let count = dsl::t_transaction.count();
-    let result = count.get_result::<i64>(&connection);
-    let id = uuid::Uuid::parse_str("44935fe3-69b3-44fe-b2de-10ca80e8aa21").unwrap();
-    let t = dao_transaction::findByAccount(String::from(""));
-    println!("{:?}", t);
 }

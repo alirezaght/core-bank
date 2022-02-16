@@ -1,7 +1,7 @@
 use diesel::{EqAll, ExpressionMethods, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 use crate::db::establish_connection;
-use crate::dsl::t_transaction;
+use crate::schema::t_transaction::dsl::t_transaction;
 use crate::models::Transaction;
 use crate::schema::t_transaction::{account, seq};
 

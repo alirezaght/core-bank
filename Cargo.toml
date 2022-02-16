@@ -11,3 +11,8 @@ chrono = "0.4.19"
 diesel-derive-enum = { version = "1.1.2", features = ["postgres"]}
 bigdecimal = "0.1.2"
 uuid = "0.6.5"
+k256 = "0.10.2"
+rand_core = "0.6.3"
+sha3 = "0.10.0"
+sha2 = "0.10.1"
+bs58 = "0.3.1"

@@ -37,6 +37,7 @@ pub enum TransactionReason {
 pub struct Transaction {
     pub id: Uuid,
     pub account: String,
+    pub account_seq: i64,
     pub transaction_type: TransactionType,
     pub seq: i64,
     pub amount: bigdecimal::BigDecimal,
@@ -59,4 +60,5 @@ pub struct Account {
     pub withdraw: bool,
     pub deposit: bool,
     pub comment: Option<String>,
+    pub created: chrono::DateTime<Utc>,
 }

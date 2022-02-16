@@ -2,13 +2,14 @@ table! {
     use diesel::sql_types::*;
     use crate::models::*;
 
-    t_account (address) {
+    t_account (address, seq) {
         address -> Varchar,
         detail -> Nullable<Text>,
         seq -> Int8,
         withdraw -> Bool,
         deposit -> Bool,
         comment -> Nullable<Text>,
+        created -> Timestamptz,
     }
 }
 
@@ -19,6 +20,7 @@ table! {
     t_transaction (id) {
         id -> Uuid,
         account -> Varchar,
+        account_seq -> Int8,
         #[sql_name = "type"]
         type_ -> Transaction_type,
         seq -> Int8,
