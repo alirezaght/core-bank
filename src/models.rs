@@ -3,10 +3,14 @@ use bigdecimal;
 use chrono::Utc;
 use diesel_derive_enum::*;
 use uuid::Uuid;
+use std::fmt;
+use serde::{Serialize, Deserialize};
+use crate::schema::t_transaction;
+use crate::schema::t_account;
 
 // TransactionType Enum
 
-#[derive(DbEnum)]
+#[derive(Serialize, Deserialize, DbEnum)]
 #[DieselType = "Transaction_type"]
 #[derive(Debug)]
 pub enum TransactionType {
@@ -16,9 +20,15 @@ pub enum TransactionType {
     UNLOCK,
 }
 
+impl fmt::Display for TransactionType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
 // TransactionReason Enum
 
-#[derive(DbEnum)]
+#[derive(Serialize, Deserialize, DbEnum)]
 #[DieselType = "Transaction_reason"]
 #[derive(Debug)]
 pub enum TransactionReason {
@@ -29,16 +39,22 @@ pub enum TransactionReason {
     WITHDRAW,
     DEPOSIT,
 }
+impl fmt::Display for TransactionReason {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
 
 // Transaction Entity
 
-#[derive(Queryable)]
+#[derive(Serialize, Deserialize, Queryable, Insertable)]
+#[table_name = "t_transaction"]
 #[derive(Debug)]
 pub struct Transaction {
     pub id: Uuid,
     pub account: String,
     pub account_seq: i64,
-    pub transaction_type: TransactionType,
+    pub type_: TransactionType,
     pub seq: i64,
     pub amount: bigdecimal::BigDecimal,
     pub reason: TransactionReason,
@@ -51,7 +67,8 @@ pub struct Transaction {
 
 // Account Entity
 
-#[derive(Queryable)]
+#[derive(Serialize, Deserialize, Queryable, Insertable)]
+#[table_name = "t_account"]
 #[derive(Debug)]
 pub struct Account {
     pub address: String,

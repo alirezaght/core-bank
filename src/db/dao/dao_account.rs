@@ -2,6 +2,7 @@ use diesel::{EqAll, ExpressionMethods, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 use crate::db::establish_connection;
 use crate::models::Account;
+use crate::schema;
 use crate::schema::t_account::{address, seq};
 use crate::schema::t_account::dsl::t_account;
 
@@ -13,7 +14,9 @@ pub fn findByAddress(account_address: String) -> Option<Account> {
     return result.ok();
 }
 
-
-
-
-
+pub fn save(account: Account) {
+    let connection = establish_connection();
+    diesel::insert_into(t_account)
+        .values(&account)
+        .execute(&connection);
+}

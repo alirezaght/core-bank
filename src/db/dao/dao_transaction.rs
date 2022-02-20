@@ -2,7 +2,7 @@ use diesel::{EqAll, ExpressionMethods, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 use crate::db::establish_connection;
 use crate::schema::t_transaction::dsl::t_transaction;
-use crate::models::Transaction;
+use crate::models::{Transaction};
 use crate::schema::t_transaction::{account, seq};
 
 
@@ -17,6 +17,13 @@ pub fn findByAccount(address: String) -> Option<Transaction> {
     let result = t_transaction.filter(account.eq(address))
         .order(seq.desc()).first::<Transaction>(&connection);
     return result.ok();
+}
+
+pub fn save(transaction: Transaction) {
+    let connection = establish_connection();
+    diesel::insert_into(t_transaction)
+        .values(&transaction)
+        .execute(&connection);
 }
 
 
