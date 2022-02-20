@@ -47,7 +47,7 @@ impl fmt::Display for TransactionReason {
 
 // Transaction Entity
 
-#[derive(Serialize, Deserialize, Queryable, Insertable)]
+#[derive(Serialize, Deserialize, Queryable, Insertable, QueryableByName)]
 #[table_name = "t_transaction"]
 #[derive(Debug)]
 pub struct Transaction {
@@ -67,7 +67,7 @@ pub struct Transaction {
 
 // Account Entity
 
-#[derive(Serialize, Deserialize, Queryable, Insertable)]
+#[derive(Serialize, Deserialize, Queryable, Insertable, QueryableByName)]
 #[table_name = "t_account"]
 #[derive(Debug)]
 pub struct Account {

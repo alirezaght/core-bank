@@ -15,6 +15,9 @@ use db::dao::dao_transaction;
 use schema::t_transaction::dsl;
 use crate::core::impl_account::*;
 use crate::core::impl_address::*;
+use crate::core::impl_transaction::*;
+use crate::core::impl_audit_account::*;
+use crate::core::impl_audit_transaction::*;
 
 use jsonrpc_http_server::jsonrpc_core::{IoHandler, Value, Params};
 use jsonrpc_http_server::{RequestMiddleware, RequestMiddlewareAction, Response, ServerBuilder};
@@ -42,6 +45,7 @@ fn main() {
    let mut io = IoHandler::default();
    io.extend_with(CoreAddressImpl.to_delegate());
    io.extend_with(CoreAccountImpl.to_delegate());
+   io.extend_with(CoreAccountAuditImpl.to_delegate());
 
    let server = ServerBuilder::new(io)
        // .request_middleware(Security)

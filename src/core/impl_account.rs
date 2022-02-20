@@ -6,6 +6,7 @@ use crate::db::dao::dao_account;
 use crate::db::dao::dao_transaction;
 use jsonrpc_core::{Error, ErrorCode, Result};
 use jsonrpc_derive::rpc;
+use crate::db::dao::pagination::Pagination;
 
 pub struct CoreAccountImpl;
 
@@ -15,6 +16,8 @@ pub trait CoreAccount {
     fn store_account(&self, address: String, detail: String, withdraw: bool, deposit: bool, comment: String) -> Result<String>;
     #[rpc(name = "get_account")]
     fn get_account(&self, address: String) -> Result<AccountDTO>;
+    #[rpc(name = "list_account")]
+    fn list_account(&self, page: i64, limit: i64) -> Result<Pagination<Account>>;
 }
 
 
@@ -50,5 +53,9 @@ impl CoreAccount for CoreAccountImpl{
             }
         }
 
+    }
+
+    fn list_account(&self, page: i64, limit: i64) -> Result<Pagination<Account>> {
+        Ok(dao_account::list(page, limit))
     }
 }
