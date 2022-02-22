@@ -12,7 +12,7 @@ use crate::schema::t_account;
 
 #[derive(Serialize, Deserialize, DbEnum)]
 #[DieselType = "Transaction_type"]
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum TransactionType {
     WITHDRAW,
     DEPOSIT,
@@ -30,7 +30,7 @@ impl fmt::Display for TransactionType {
 
 #[derive(Serialize, Deserialize, DbEnum)]
 #[DieselType = "Transaction_reason"]
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum TransactionReason {
     TRANSFER,
     REVERT,
@@ -49,7 +49,7 @@ impl fmt::Display for TransactionReason {
 
 #[derive(Serialize, Deserialize, Queryable, Insertable, QueryableByName)]
 #[table_name = "t_transaction"]
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Transaction {
     pub id: Uuid,
     pub account: String,
@@ -62,14 +62,35 @@ pub struct Transaction {
     pub description: Option<String>,
     pub balance: bigdecimal::BigDecimal,
     pub blocked: bigdecimal::BigDecimal,
+    pub factor: Option<String>,
     pub created: chrono::DateTime<Utc>,
+}
+
+impl Default for Transaction {
+    fn default() -> Self {
+        Transaction {
+            id: Default::default(),
+            account: "".to_string(),
+            account_seq: 0,
+            type_: TransactionType::WITHDRAW,
+            seq: 0,
+            amount: Default::default(),
+            reason: TransactionReason::DEPOSIT,
+            comment: None,
+            description: None,
+            balance: Default::default(),
+            blocked: Default::default(),
+            factor: None,
+            created: Utc::now()
+        }
+    }
 }
 
 // Account Entity
 
 #[derive(Serialize, Deserialize, Queryable, Insertable, QueryableByName)]
 #[table_name = "t_account"]
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Account {
     pub address: String,
     pub detail: Option<String>,

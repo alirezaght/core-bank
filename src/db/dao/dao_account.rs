@@ -9,7 +9,7 @@ use crate::schema::t_account::{address, comment, created, deposit, detail, seq, 
 use crate::schema::t_account::dsl::t_account;
 
 
-pub fn findByAddress(account_address: String) -> Option<Account> {
+pub fn find_by_address(account_address: String) -> Option<Account> {
     let connection = establish_connection();
     let result = t_account.filter(address.eq(account_address))
         .order(seq.desc()).first::<Account>(&connection);
@@ -18,9 +18,12 @@ pub fn findByAddress(account_address: String) -> Option<Account> {
 
 pub fn save(account: Account) {
     let connection = establish_connection();
-    diesel::insert_into(t_account)
+    let result = diesel::insert_into(t_account)
         .values(&account)
         .execute(&connection);
+    if result.is_err() {
+        println!("{:?}", result.err());
+    }
 }
 
 pub fn list(page: i64, limit: i64) -> Pagination<Account> {

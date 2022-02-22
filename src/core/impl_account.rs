@@ -13,46 +13,51 @@ pub struct CoreAccountImpl;
 #[rpc]
 pub trait CoreAccount {
     #[rpc(name = "store_account")]
-    fn store_account(&self, address: String, detail: String, withdraw: bool, deposit: bool, comment: String) -> Result<String>;
+    fn store_account(&self, address: String, detail: String, withdraw: bool, deposit: bool,
+                     comment: String) -> Result<String>;
     #[rpc(name = "get_account")]
     fn get_account(&self, address: String) -> Result<AccountDTO>;
     #[rpc(name = "list_account")]
     fn list_account(&self, page: i64, limit: i64) -> Result<Pagination<Account>>;
+//TODO:     get account at time
 }
 
 
-impl CoreAccount for CoreAccountImpl{
+impl CoreAccount for CoreAccountImpl {
     fn store_account(&self, address: String, detail: String,
                      withdraw: bool, deposit: bool, comment: String) -> Result<String> {
-        let account = Account{
+        let account = Account {
             address,
             detail: Option::from(detail),
             seq: 0,
             withdraw,
             deposit,
             comment: Option::from(comment),
-            created: Utc::now()
+            created: Utc::now(),
         };
         dao_account::save(account);
         Ok("OK".to_string())
     }
     fn get_account(&self, address: String) -> Result<AccountDTO> {
         let account_address = address.clone();
-        let account = dao_account::findByAddress(address);
-        let transaction = dao_transaction::findByAccount(account_address);
-        match account { None => Err(Error {
-            code: ErrorCode::from(-1),
-            message: "Can't find account".to_string(),
-            data: None
-        }),
+        let account = dao_account::find_by_address(address);
+        let transaction = dao_transaction::find_by_account(account_address);
+        match account {
+            None => Err(Error {
+                code: ErrorCode::from(-1),
+                message: "Can't find account".to_string(),
+                data: None,
+            }),
             Some(account) => {
                 let mut dto: AccountDTO = AccountDTO::from(account);
-                dto.last_tx = match transaction { None => None, Some(transaction) =>
-                    Option::from(TransactionDTO::from(transaction)) };
+                dto.last_tx = match transaction {
+                    None => None,
+                    Some(transaction) =>
+                        Option::from(TransactionDTO::from(transaction))
+                };
                 Ok(dto)
             }
         }
-
     }
 
     fn list_account(&self, page: i64, limit: i64) -> Result<Pagination<Account>> {

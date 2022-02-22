@@ -46,6 +46,8 @@ fn main() {
    io.extend_with(CoreAddressImpl.to_delegate());
    io.extend_with(CoreAccountImpl.to_delegate());
    io.extend_with(CoreAccountAuditImpl.to_delegate());
+   io.extend_with(CoreAuditTransactionImpl.to_delegate());
+   io.extend_with(CoreTransactionImpl.to_delegate());
 
    let server = ServerBuilder::new(io)
        // .request_middleware(Security)

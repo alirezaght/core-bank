@@ -30,6 +30,7 @@ table! {
         description -> Nullable<Text>,
         balance -> Numeric,
         blocked -> Numeric,
+        factor -> Nullable<Varchar>,
         created -> Timestamptz,
     }
 }

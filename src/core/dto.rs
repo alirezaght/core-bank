@@ -15,6 +15,7 @@ pub struct TransactionDTO{
     pub reason: String,
     pub balance: BigDecimal,
     pub blocked: BigDecimal,
+    pub factor: Option<String>,
     pub time: chrono::DateTime<Utc>,
 }
 
@@ -30,6 +31,7 @@ impl From<Transaction> for TransactionDTO {
             reason: transaction.reason.to_string(),
             balance: transaction.balance,
             blocked: transaction.blocked,
+            factor: transaction.factor,
             time: transaction.created
         }
     }

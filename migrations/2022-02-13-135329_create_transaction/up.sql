@@ -1,5 +1,5 @@
-CREATE TYPE transaction_type AS ENUM ('WITHDRAW', 'DEPOSIT', 'LOCK', 'UNLOCK');
-CREATE TYPE transaction_reason AS ENUM ('TRANSFER', 'REVERT', 'LOCK', 'UNLOCK', 'WITHDRAW', 'DEPOSIT');
+CREATE TYPE transaction_type AS ENUM ('withdraw', 'deposit', 'lock', 'unlock');
+CREATE TYPE transaction_reason AS ENUM ('transfer', 'revert', 'lock', 'unlock', 'withdraw', 'deposit');
 
 CREATE TABLE t_account (
   address VARCHAR(100),
@@ -25,6 +25,7 @@ CREATE TABLE t_transaction (
   description TEXT,
   balance NUMERIC NOT NULL DEFAULT 0 CHECK (balance >= 0),
   blocked NUMERIC NOT NULL DEFAULT 0 CHECK (blocked >= 0),
+  factor VARCHAR(100),
   created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   CHECK (balance >= blocked),
   UNIQUE (account, seq),
