@@ -12,6 +12,11 @@ CREATE TABLE t_account (
   PRIMARY KEY (address, seq)
 );
 
+CREATE INDEX account_address_index ON t_account(address);
+CREATE INDEX account_seq_index ON t_account(seq);
+CREATE INDEX account_address_seq_index ON t_account(address, seq);
+CREATE INDEX account_created_index ON t_account(created);
+
 
 CREATE TABLE t_transaction (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -33,3 +38,8 @@ CREATE TABLE t_transaction (
 );
 
 CREATE INDEX transaction_account_index ON t_transaction(account);
+CREATE INDEX transaction_account_seq_index ON t_transaction(account_seq);
+CREATE INDEX transaction_account_account_seq_index ON t_transaction(account, account_seq);
+CREATE INDEX transaction_seq_index ON t_transaction(seq);
+CREATE INDEX transaction_seq_account_account_seq_index ON t_transaction(account, account_seq, seq);
+CREATE INDEX transaction_created_index ON t_transaction(created);

@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+    cb:
+        ports:
+            - "3030:3030"
+        container_name: cb
+        image: core-bank
+        restart: always
+        environment:
+            DATABASE_URL: postgres://postgres:postgres@localhost/cb
+        networks:
+            - core-bank-network
+

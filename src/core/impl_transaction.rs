@@ -149,17 +149,24 @@ impl CoreTransaction for CoreTransactionImpl {
     }
 
     fn transfer(&self, from: String, to: String, amount: BigDecimal, comment: String, description: String) -> Result<String> {
+        if from == to {
+            return Err(Error {
+                code: ErrorCode::from(-1),
+                message: "From and To should be different".to_string(),
+                data: None,
+            });
+        }
         let from_account = dao_account::find_by_address(from.to_owned());
         match from_account {
             None => Err(Error {
-                code: ErrorCode::from(-1),
+                code: ErrorCode::from(-2),
                 message: "Couldn't find account".to_string(),
                 data: None,
             }),
             Some(from_account) => {
                 if !from_account.withdraw {
                     return Err(Error {
-                        code: ErrorCode::from(-2),
+                        code: ErrorCode::from(-3),
                         message: "Couldn't withdraw from account".to_string(),
                         data: None,
                     });
@@ -167,14 +174,14 @@ impl CoreTransaction for CoreTransactionImpl {
                     let to_account = dao_account::find_by_address(to.to_owned());
                     match to_account {
                         None => Err(Error {
-                            code: ErrorCode::from(-3),
+                            code: ErrorCode::from(-4),
                             message: "Couldn't find account".to_string(),
                             data: None,
                         }),
                         Some(to_account) => {
                             if !to_account.deposit {
                                 return Err(Error {
-                                    code: ErrorCode::from(-4),
+                                    code: ErrorCode::from(-5),
                                     message: "Couldn't deposit to account".to_string(),
                                     data: None,
                                 });
